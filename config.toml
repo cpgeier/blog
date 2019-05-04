@@ -1,4 +1,5 @@
-baseurl = "http://example.com/"
+baseurl = "https://cpgeier.github.io/blog/"
+publishDir = "docs"
 title = "Yo!"
 theme = "pulp"
 canonifyurls = true

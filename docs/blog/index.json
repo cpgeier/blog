@@ -1,6 +1,6 @@
 [
     {
-        "ref": "http://example.com/blog/markdown-syntax/",
+        "ref": "https://cpgeier.github.io/blog/blog/markdown-syntax/",
         "title": "Markdown Syntax Guide",
         "section": "blog",
         "date" : "2019.03.11",
@@ -8,7 +8,7 @@
     }
 ,
     {
-        "ref": "http://example.com/blog/rich-content/",
+        "ref": "https://cpgeier.github.io/blog/blog/rich-content/",
         "title": "Rich Content",
         "section": "blog",
         "date" : "2019.03.10",
@@ -16,7 +16,7 @@
     }
 ,
     {
-        "ref": "http://example.com/blog/placeholder-text/",
+        "ref": "https://cpgeier.github.io/blog/blog/placeholder-text/",
         "title": "Placeholder Text",
         "section": "blog",
         "date" : "2019.03.09",
@@ -24,7 +24,7 @@
     }
 ,
     {
-        "ref": "http://example.com/blog/math-typesetting/",
+        "ref": "https://cpgeier.github.io/blog/blog/math-typesetting/",
         "title": "Math Typesetting",
         "section": "blog",
         "date" : "2019.03.08",
@@ -32,7 +32,7 @@
     }
 ,
     {
-        "ref": "http://example.com/blog/emoji-support/",
+        "ref": "https://cpgeier.github.io/blog/blog/emoji-support/",
         "title": "Emoji Support",
         "section": "blog",
         "date" : "2019.03.05",
