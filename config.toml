@@ -1,0 +1,54 @@
+baseurl = "http://example.com/"
+title = "Yo!"
+theme = "pulp"
+canonifyurls = true
+hasCJKLanguage = true
+# pygmentsCodefences = true
+# pygmentsUseClasses = true
+# googleAnalytics = "{your tracking code}"
+
+[taxonomies]
+  series = "series"
+
+[params]
+    author = "Chris Geier"
+    avatar = "avatar.png"
+    favicon = "favicon.ico"
+    description = """
+        Hello! I'm currently a student University of Virginia studying computer science. 
+        I'm super passionate about the intersection of software engineering and data science.
+        I also love working with cloud technologies (AWS) and web development (Angular, JS).
+        Check out my Github if you want to see some cool projects I've worked on! 
+    """
+    publicationYear = "2019"
+    listPageDateFormat = "January, 2006" # See https://gohugo.io/functions/format/
+    singlePageDateFormat = "January 2, 2006"
+    # custom_css = ["/css/custom.css"]
+    # custom_js = ["/js/custom.js"]
+
+[outputs]
+    section = ["JSON", "HTML"]
+
+[[menu.main]]
+    name = "Blog"
+    pre = "<i class='fa fa-book-open fa-lg'></i>" #Choose your favorite font from Font Awesome
+    url = "/blog/"
+    weight = 10
+
+[[menu.main]]
+    name = "LinkedIn"
+    pre = "<i class='fab fa-linkedin fa-lg'></i>"
+    url = "https://linkedin.com/in/christopher-geier-6b7912139/"
+    weight = 20
+
+[[menu.main]]
+    name = "GitHub"
+    pre = "<i class='fab fa-github fa-lg'></i>"
+    url = "https://github.com/cpgeier"
+    weight = 30
+
+[[menu.main]]
+    name = "Email"
+    pre = "<i class='fa fa-envelope fa-lg'></i>"
+    url = "mailto:cpg3rb@virginia.edu"
+    weight = 40
