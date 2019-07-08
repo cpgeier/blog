@@ -1,55 +1,93 @@
 ---
-title: "Placeholder Text"
+title: "Real-time Social Media"
 date: 2019-03-09
 draft: false
 ---
 
-## Mole et vultus populifer quaque primoque non
+# A nearly free way to host a website streaming Twitter data
 
-Lorem est tota propiore conpellat pectoribus de
-pectora summo. <!--more-->Redit teque digerit hominumque toris verebor lumina non cervice
-subde tollit usus habet Arctonque, furores quas nec ferunt. Quoque montibus nunc
-caluere tempus inhospita parcite confusaque translucet patri vestro qui optatis
-lumine cognoscere flos nubis! Fronde ipsamque patulos Dryopen deorum.
+[I built a nearly free website for streaming live Twitter data.](https://no-bs.ml/). 
 
-1. Exierant elisi ambit vivere dedere
-2. Duce pollice
-3. Eris modo
-4. Spargitque ferrea quos palude
+I also knew that there are so many hosting services with a "community" or "hobby" tier and I wanted to see if I could build a cool website that doesn't cost money to host.
 
-Rursus nulli murmur; hastile inridet ut ab gravi sententia! Nomine potitus
-silentia flumen, sustinet placuit petis in dilapsa erat sunt. Atria
-tractus malis.
+Please give me a star on [my Github](https://github.com/cpgeier) if you like my work!
+<div style='position:relative; padding-bottom:56.25%'><iframe src='https://gfycat.com/ifr/powerfulfamousamericanbadger' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe></div>
 
-1. Comas hunc haec pietate fetum procerum dixit
-2. Post torum vates letum Tiresia
-3. Flumen querellas
-4. Arcanaque montibus omnes
-5. Quidem et
+## Motivation
 
-# Vagus elidunt
+I really like looking at data and I thought watching the first 2019 Democratic debates were pretty exciting. I wanted to see if it was possible for me to create a live stream of Tweets from twitter around the election. I thought it would be really cool, especially during debates, to see what people were tweeting about. 
 
-<svg class="canon" xmlns="http://www.w3.org/2000/svg" overflow="visible" viewBox="0 0 496 373" height="373" width="496"><g fill="none"><path stroke="#000" stroke-width=".75" d="M.599 372.348L495.263 1.206M.312.633l494.95 370.853M.312 372.633L247.643.92M248.502.92l246.76 370.566M330.828 123.869V1.134M330.396 1.134L165.104 124.515"></path><path stroke="#ED1C24" stroke-width=".75" d="M275.73 41.616h166.224v249.05H275.73zM54.478 41.616h166.225v249.052H54.478z"></path><path stroke="#000" stroke-width=".75" d="M.479.375h495v372h-495zM247.979.875v372"></path><ellipse cx="498.729" cy="177.625" rx=".75" ry="1.25"></ellipse><ellipse cx="247.229" cy="377.375" rx=".75" ry="1.25"></ellipse></g></svg>
+## Twitter API
 
-[The Van de Graaf Canon](https://en.wikipedia.org/wiki/Canons_of_page_construction#Van_de_Graaf_canon)
+![](/img/twitter_streaming_api.PNG)
 
-## Mane refeci capiebant unda mulcebat
+The Twitter API has a streaming API endpoint and I used this to get all the data that I use in the application. The [python-twitter](https://github.com/bear/python-twitter) python package was super useful for connecting to the api. 
 
-Victa caducifer, malo vulnere contra
-dicere aurato, ludit regale, voca! Retorsit colit est profanae esse virescere
-furit nec; iaculi matertera et visa est, viribus. Divesque creatis, tecta novat collumque vulnus est, parvas. **Faces illo pepulere** tempus adest. Tendit flamma, ab opes virum sustinet, sidus sequendo urbis.
+To pipe data in constantly I deployed a Python script with Docker on Azure Container service. This is the only part of the tech stack that may cost money, however this part could be run from a Raspberry Pi. I used the Azure Student discount in this case so it didn't cost anything for me.
 
-Iubar proles corpore raptos vero auctor imperium; sed et huic: manus caeli
-Lelegas tu lux. Verbis obstitit intus oblectamina fixis linguisque ausus sperare
-Echionides cornuaque tenent clausit possit. Omnia putatur. Praeteritae refert
-ausus; ferebant e primus lora nutat, vici quae mea ipse. Et iter nil spectatae
-vulnus haerentia iuste et exercebat, sui et.
+## Where to store Twitter data?
 
-Eurytus Hector, materna ipsumque ut Politen, nec, nate, ignari, vernum cohaesit sequitur. Vel **mitis temploque** vocatus, inque alis, *oculos nomen* non silvis corpore coniunx ne displicet illa. Crescunt non unus, vidit visa quantum inmiti flumina mortis facto sic: undique a alios vincula sunt iactata abdita! Suspenderat ego fuit tendit: luna, ante urbem
-Propoetides **parte**.
+Elasticsearch is a great place to put Twitter data because the data can be easily searched or filtered. I was able to have my Elasticsearch server hosted for free through [https://bonsai.io/](https://bonsai.io/). Although they use an older version it works pretty well. 
 
-{{< css.inline >}}
-<style>
-.canon { background: white; width: 100%; height: auto;}
-</style>
-{{< /css.inline >}}
+To use the free Elasticsearch service I had to impliment a way to clear out old records in the server since I only have ~120mb on the free server version. I ended up just instructing my Python function to clear old records after the size gets over 100mb. 
+
+## An API for Elasticsearch data
+
+Now I needed a way to retrieve that data from Elasticsearch. Express is a fantastic backend and while I was searching for real-time data stream platforms I found [Socket.io](Socket.io) which seemed to have a really good support and documentation. 
+
+I ended up following [this tutorial](https://auth0.com/blog/real-time-charts-using-angular-d3-and-socket-io/) to get up and running with Angular, D3, and Socket.IO. 
+
+## Front end
+
+For the front end I used Angular, Bootstrap and Ngx-Charts. Originally I used the D3 setup from the tutorial, but I figured D3 was too combersome to plot simple streaming data.
+
+### Streaming Tweets
+
+One of the major problems I ran into was trying to get the Twitter tweets to render and then disappear in a way that looked good. 
+
+The reason why two tweets appear now isn't really intentional. Originally I wanted to have one tweet on the screen that instantly switches to a new tweet after a period. 
+
+However since the only easy way to render tweets in the Twitter way is to use their Javascript which doesn't play nice with Angular. 
+
+I ended up doing a really weird hack to get it to work and if I spend more time on this project I'll probably try to fix it. 
+
+{{< highlight javascript>}}
+      // @ts-ignore
+      twttr.widgets.createTweet(
+        this.tweetId,
+        document.getElementById("tw-" + this.first)
+      );
+{{< / highlight >}}
+
+The key was using this javascript to embed the tweet in the page rather than chaning the embed HTML. 
+
+
+
+## Tools
+
+All the tools I used are listed here:
+
+1. Elasticsearch
+    - Tweet storage
+    - Ability to filter tweets
+    - Deployed through Bonsai.io
+2. Express & Socket.io
+    - Maintains live connection to send data
+    - Calls Elasticsearch every second for new data
+    - Deployed through Azure Container Service
+3. Angular & Bootstrap
+    - Front end framework
+    - Deployed through Heroku
+
+Someother tools I used were:
+
+- DockerHub - Free container builds
+- Freenom - Free domain hosting
+
+## Moving forward
+
+The way I host my application (Heroku, Netlify, and Azure Container Service) allows me to have CD of the application as I make changes to it. I hope to containerize more of my services to make this project easier to host.
+
+Also, in the future I'm hoping to add more live visualizations of specifically tweet keyword data like "Joe Biden" or "Donald Trump."
+
+One of my main objectives with this site is to stay as unbiased as possible and so I'm hoping to add visualizations that go cater to all sides of the election.
